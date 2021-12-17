@@ -1,0 +1,7 @@
+version: '3'
+services:
+  user-interface:
+    build: .
+    image: matt/react:latest
+    ports:
+      - "3000:3000"
