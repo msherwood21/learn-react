@@ -4,4 +4,10 @@ services:
     build: .
     image: matt/react:latest
     ports:
-      - "3000:3000"
+      - "3001:3001"
+    volumes:
+      - type: bind
+        source: ./src
+        target: /opt/project/src
+volumes:
+  src:
