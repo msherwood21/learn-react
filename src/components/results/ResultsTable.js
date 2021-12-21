@@ -1,3 +1,5 @@
+import ResultRow from "./ResultRow";
+
 function ResultsTable(props) {
   return (
     <table>
@@ -8,14 +10,11 @@ function ResultsTable(props) {
           <th>Time</th>
         </tr>
       </thead>
-      <tbody></tbody>
-      {props.raceResults.map((result) => (
-        <tr>
-          <td>{result.driver}</td>
-          <td>{result.car}</td>
-          <td>{result.time}</td>
-        </tr>
-      ))}
+      <tbody>
+        {props.raceResults.map((result) => (
+          <ResultRow driver={result.driver} car={result.car} time={result.time} />
+        ))}
+      </tbody>
     </table>
   );
 }
