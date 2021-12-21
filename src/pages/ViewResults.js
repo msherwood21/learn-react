@@ -1,4 +1,3 @@
-import logo from "../logo.svg";
 import "../App.css";
 import { useContext } from "react";
 import { useParams } from "react-router-dom";
@@ -12,16 +11,17 @@ function ViewResults() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
         <p>View Results</p>
+      </header>
+      <main>
         <div>
-          <label>Race: {context.races[params.id].name} Grand Prix</label>
+          <h1>{context.races[params.id].name} Grand Prix</h1>
         </div>
         <div>
-          <label>Number of Drivers: {context.races[params.id].drivers.length}</label>
+          <h2>Number of Drivers: {context.races[params.id].drivers.length}</h2>
         </div>
         <ResultsTable raceResults={context.races[params.id].drivers} />
-      </header>
+      </main>
     </div>
   );
 }

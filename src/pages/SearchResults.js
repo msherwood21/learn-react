@@ -38,18 +38,20 @@ function SearchResults() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        <p>Search Results</p>
+      </header>
+      <main>
         <form onSubmit={submitHandler}>
           <div>
             <label>Race Name</label>
             <input type="text" required ref={raceRef} />
-            <button>Search Results</button>
+            <button>Search</button>
           </div>
           <div>
             {!isValid && <label className={classes.badInput}>Race not found in database!</label>}
           </div>
         </form>
-      </header>
+      </main>
     </div>
   );
 }
