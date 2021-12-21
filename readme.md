@@ -11,6 +11,11 @@ A website to create and list the results of a race. There should be a home page,
 (at least) a page for results and a page to create / update results. Deletion is
 not to be undertaken.
 
+# Improvements / Issues
+
+- Wrapping `Route`s with a Context doesn't work unless you wrap the parent
+  `Routes` element. Sharing is too global.
+
 # React Generated Documentation
 
 ## Available Scripts
