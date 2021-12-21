@@ -1,4 +1,3 @@
-import logo from "../logo.svg";
 import "../App.css";
 import classes from "./SearchResult.module.css";
 import { useContext, useRef, useState } from "react";
