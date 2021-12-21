@@ -1,18 +1,17 @@
 import logo from "../logo.svg";
 import "../App.css";
-import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-function Home() {
-  const params = useParams();
-
+function SearchResults() {
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>View Results ({params.id})</p>
+        <p>Search Results</p>
+        <Link to="/view/1" >View Results</Link>
       </header>
     </div>
   );
 }
 
-export default Home;
+export default SearchResults;

@@ -1,19 +1,20 @@
-import "./App.css";
 import { Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
+import Layout from "./components/ui/Layout";
 import CreateResults from "./pages/CreateResults";
+import Home from "./pages/Home";
+import SearchResults from "./pages/SearchResults";
 import ViewResults from "./pages/ViewResults";
 
 function App() {
   return (
-    <div className="App">
-      <h1>Welcome to React Router!</h1>
-      <Routes>
-        <Route path="/" element={<Home />} exact />
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Home />} />
         <Route path="/create" element={<CreateResults />} />
-        <Route path="/view" element={<ViewResults />} />
-      </Routes>
-    </div>
+        <Route path="/search" element={<SearchResults />} />
+        <Route path="/view/:id" element={<ViewResults />} />
+      </Route>
+    </Routes>
   );
 }
 
