@@ -1,4 +1,5 @@
-import { createContext, useState } from "react";
+import React, { createContext, useState } from "react";
+import propTypes from "prop-types";
 
 /*
  * Array layout:
@@ -10,8 +11,9 @@ import { createContext, useState } from "react";
  *    ]
  *  }
  */
-const RaceResultsContext = createContext({
+export const RaceResultsContext = createContext({
   races: [],
+  // eslint-disable-next-line no-unused-vars
   addRace: (raceResult) => {},
 });
 
@@ -49,5 +51,9 @@ export function RaceResultsContextProvider(props) {
     <RaceResultsContext.Provider value={raceContext}>{props.children}</RaceResultsContext.Provider>
   );
 }
+
+RaceResultsContextProvider.propTypes = {
+  children: propTypes.node,
+};
 
 export default RaceResultsContext;

@@ -1,5 +1,5 @@
 import "../App.css";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { useParams } from "react-router-dom";
 import ResultsTable from "../components/results/ResultsTable";
 import RaceResultsContext from "../store/RaceResultsContext";
@@ -10,17 +10,15 @@ function ViewResults() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <p>View Results</p>
-      </header>
       <main>
+        <h1>View Results</h1>
         <div>
           <h1>{context.races[params.id].name} Grand Prix</h1>
         </div>
         <div>
           <h2>Number of Drivers: {context.races[params.id].drivers.length}</h2>
         </div>
-        <ResultsTable raceResults={context.races[params.id].drivers} />
+        <ResultsTable rowType={true} raceResults={context.races[params.id].drivers} />
       </main>
     </div>
   );
