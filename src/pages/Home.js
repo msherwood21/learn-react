@@ -1,13 +1,12 @@
 import "../App.css";
+import React from "react";
 import { Link } from "react-router-dom";
 
 function Home() {
   return (
     <div className="App">
-      <header className="App-header">
-        <p>Home</p>
-      </header>
       <main>
+        <h1>Home</h1>
         <p>
           <Link to="/search">Search Results</Link>
         </p>

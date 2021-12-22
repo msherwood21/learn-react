@@ -1,6 +1,6 @@
 import "../App.css";
 import classes from "./SearchResult.module.css";
-import { useContext, useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import RaceResultsContext from "../store/RaceResultsContext";
 
@@ -36,10 +36,8 @@ function SearchResults() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <p>Search Results</p>
-      </header>
       <main>
+        <h1>Search Results</h1>
         <form onSubmit={submitHandler}>
           <div>
             <label>Race Name</label>
