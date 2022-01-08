@@ -5,51 +5,32 @@ import { RaceResultsContext } from "../store/RaceResultsContext";
 import ResultsTable from "../components/results/ResultsTable";
 
 function CreateResults() {
-  const context = useContext(RaceResultsContext);
+  const raceResults = useContext(RaceResultsContext);
   const navigate = useNavigate();
-  const [state, setState] = useState({ name: "", drivers: [] });
+  const [name, setName] = useState("");
+  const [drivers, setDrivers] = useState([]);
 
-  function submitHandler() {
-    context.addRace(state);
+  const submitHandler = () => {
+    raceResults.addRace({ name, drivers });
     navigate("/");
-  }
+  };
 
-  function nameHandler(event) {
-    setState({ name: event.target.value, drivers: state.drivers });
-  }
+  const resultHandler = (index, key, event) => {
+    const previousDrivers = drivers.slice(0, index);
+    const updatedResult = { ...drivers[index], [key]: event.target.value };
+    const nextDrivers = drivers.slice(index + 1);
+    setDrivers([...previousDrivers, updatedResult, ...nextDrivers]);
+  };
 
-  function resultHandler(index, key, event) {
-    let updatedResult = state.drivers[index];
-    updatedResult[key] = event.target.value;
+  const driverCountHandler = ({ target: { value: driverCount } }) => {
+    const diff = driverCount - drivers.length;
+    if (diff === 0) return;
+    if (diff < 0) return setDrivers(drivers.slice(0, driverCount));
 
-    const previousDrivers = state.drivers.slice(0, index);
-    const nextDrivers = state.drivers.slice(index + 1);
-
-    setState({ name: state.name, drivers: [...previousDrivers, updatedResult, ...nextDrivers] });
-  }
-
-  function driverCountHandler(event) {
-    if (event.target.value > state.drivers.length) {
-      const diff = event.target.value - state.drivers.length;
-      let newRows = [];
-
-      for (let i = 0; i < diff; i++) {
-        newRows.push({
-          driver: "",
-          car: "",
-          time: "",
-        });
-      }
-
-      setState(() => {
-        return { name: state.name, drivers: state.drivers.concat(newRows) };
-      });
-    } else {
-      if (event.target.value < state.drivers.length) {
-        setState({ name: state.name, drivers: state.drivers.slice(0, event.target.value) });
-      }
-    }
-  }
+    const newDriver = { driver: "", car: "", time: "" };
+    const newRows = new Array(diff).fill(newDriver);
+    setDrivers([...drivers, ...newRows]);
+  };
 
   return (
     <div className="App">
@@ -57,17 +38,19 @@ function CreateResults() {
         <h1>Create Results</h1>
         <div>
           <label>Race Name: </label>
-          <input type="text" required onChange={nameHandler} />
+          <input type="text" onChange={(e) => setName(e.target.value)} />
         </div>
         <div>
           <label>Number of drivers: </label>
-          <input type="number" required min="0" onInput={driverCountHandler} />
+          <input type="number" min="0" onInput={driverCountHandler} />
         </div>
         <div>
-          <p>Enter the driver standings. Order is determined by entry position.</p>
+          <p>
+            Enter the driver standings. Order is determined by entry position.
+          </p>
           <ResultsTable
             rowType={false}
-            raceResults={state.drivers}
+            raceResults={drivers}
             onDriverNameChange={resultHandler}
             onCarChange={resultHandler}
             onTimeChange={resultHandler}
