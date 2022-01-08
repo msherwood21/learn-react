@@ -3,10 +3,10 @@ import React from "react";
 
 function ResultRow(props) {
   return (
-    <tr key={props.key + "-result-row"}>
-      <td key={props.key + "-result-driver"}>{props.driver}</td>
-      <td key={props.key + "-result-car"}>{props.car}</td>
-      <td key={props.key + "-result-time"}>{props.time}</td>
+    <tr>
+      <td>{props.driver}</td>
+      <td>{props.car}</td>
+      <td>{props.time}</td>
     </tr>
   );
 }

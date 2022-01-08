@@ -16,7 +16,12 @@ function ResultsTable(props) {
       <tbody>
         {props.rowType &&
           props.raceResults.map((result, index) => (
-            <ResultRow key={index} driver={result.driver} car={result.car} time={result.time} />
+            <ResultRow
+              key={index}
+              driver={result.driver}
+              car={result.car}
+              time={result.time}
+            />
           ))}
         {!props.rowType &&
           props.raceResults.map((result, index) => (
@@ -25,7 +30,9 @@ function ResultsTable(props) {
               driver={result.driver}
               car={result.car}
               time={result.time}
-              onDriverNameChange={(event) => props.onDriverNameChange(index, "driver", event)}
+              onDriverNameChange={(event) =>
+                props.onDriverNameChange(index, "driver", event)
+              }
               onCarChange={(event) => props.onCarChange(index, "car", event)}
               onTimeChange={(event) => props.onTimeChange(index, "time", event)}
             />
