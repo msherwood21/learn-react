@@ -1,7 +1,7 @@
 import "../App.css";
 import classes from "./SearchResult.module.css";
 import React, { useContext, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import RaceResultsContext from "../store/RaceResultsContext";
 
 function SearchResults() {
@@ -48,6 +48,17 @@ function SearchResults() {
             {!isValid && <label className={classes.badInput}>Race not found in database!</label>}
           </div>
         </form>
+        <h2>Race Results</h2>
+        <ul>
+          {context.races.map((_, index) => {
+            const link = "/view/" + index.toString();
+            return (
+              <Link to={link}>
+                <li>{context.races[index].name}</li>
+              </Link>
+            );
+          })}
+        </ul>
       </main>
     </div>
   );
