@@ -17,26 +17,8 @@ export const RaceResultsContext = createContext({
   addRace: (raceResult) => {},
 });
 
-const DummyData = [
-    {
-      name: "Bahrain",
-      drivers: [
-        {
-          driver: "Lance Stroll",
-          car: "Aston Martin",
-          time: "1:37:42.092",
-        },
-        {
-          driver: "Nicholas Latifi",
-          car: "Williams",
-          time: "1:38:14.820",
-        },
-      ],
-    },
-  ];
-
 export function RaceResultsContextProvider(props) {
-  const [raceResults, setRaceResults] = useState(DummyData);
+  const [raceResults, setRaceResults] = useState([]);
 
   function addRaceHandler(raceResult) {
     setRaceResults((raceResults) => raceResults.concat(raceResult));
