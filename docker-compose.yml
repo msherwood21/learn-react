@@ -1,13 +1,32 @@
-version: '3'
+version: "3"
 services:
   user-interface:
-    build: .
-    image: matt/react:latest
+    build: web
+    image: matt/react-web:latest
+    depends_on:
+      - server
+      - db
     ports:
       - "3001:3001"
     volumes:
       - type: bind
-        source: ./src
+        source: ./web/src
         target: /opt/project/src
-volumes:
-  src:
+  server:
+    build: server
+    image: matt/react-server:latest
+    depends_on:
+      - db
+    volumes:
+      - type: bind
+        source: ./server/src
+        target: /opt/project/src
+  db:
+    image: postgres:14.1
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=test
+    volumes:
+      - type: bind
+        source: ./db-files
+        target: /var/lib/postgresql/data
