@@ -1,11 +1,19 @@
 {
+  "name": "race-server",
+  "version": "0.0.1",
   "scripts": {
     "start": "node src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "DEBUG=express:* node test/index.js"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "^4.17.2",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1",
     "pg": "^8.7.1"
+  },
+  "devDependencies": {
+    "rest": "^2.0.0"
   }
 }
