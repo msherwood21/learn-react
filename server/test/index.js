@@ -32,7 +32,7 @@ api.verify({
   testDescription: "GET /races",
   httpMethod: "GET",
   path: "/races",
-  expectedResponse: "Received GET /races",
+  expectedResponse: `[{"name":"Formula 1 Gulf Air Bahrain Grand Prix","drivers":[{"driver":"Lewis Hamilton","car":"Mercedes","time":"1:32:03.897"},{"driver":"Max Verstappen","car":"Red Bull Racing Honda","time":"+0.745s"},{"driver":"Valtteri Bottas","car":"Mercedes","time":"+37.383s"}]},{"name":"Formula 1 Pirelli Gran Premio Del Made In Italy E Dell'Emilia Romagna","drivers":[{"driver":"Max Verstappen","car":"Red Bull Racing Honda","time":"2:02:34.598"},{"driver":"Lewis Hamilton","car":"Mercedes","time":"+22.000s"},{"driver":"Lando Norris","car":"McLaren Mercedes","time":"+23.702s"}]}]`,
 });
 api.verify({
   testDescription: "GET /race",

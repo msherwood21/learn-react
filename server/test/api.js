@@ -13,7 +13,7 @@ function init(doneEvent) {
 
     let allDone = true;
     for (test in testStatus) {
-      if (test === false) {
+      if (testStatus[test] === false) {
         allDone = false;
         break;
       }
