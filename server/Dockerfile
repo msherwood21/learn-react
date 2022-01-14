@@ -1,5 +1,7 @@
 FROM node:17.2
 
+ENV DEBUG=express:*
+
 WORKDIR /opt/project
 COPY ./package.json .
 RUN npm install

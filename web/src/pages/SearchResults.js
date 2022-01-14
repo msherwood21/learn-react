@@ -1,22 +1,21 @@
 import "../App.css";
 import classes from "./SearchResult.module.css";
-import React, { useContext, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import RaceResultsContext from "../store/RaceResultsContext";
 
 function SearchResults() {
-  const context = useContext(RaceResultsContext);
   const navigate = useNavigate();
   const raceRef = useRef();
   const [isValid, setIsValid] = useState(true);
+  const [races, setRaces] = useState([]);
 
-  function submitHandler(event) {
+  const submitHandler = (event) => {
     let raceId = -1;
 
     event.preventDefault();
 
-    for (const race in context.races) {
-      if (context.races[race].name === raceRef.current.value) {
+    for (const race in races) {
+      if (races[race].name === raceRef.current.value) {
         raceId = race;
         break;
       }
@@ -32,7 +31,18 @@ function SearchResults() {
         setIsValid(false);
       }
     }
-  }
+  };
+
+  useEffect(async () => {
+    try {
+      const response = await fetch("http://localhost:3001/races");
+      const json = await response.json();
+
+      setRaces(json);
+    } catch (err) {
+      console.log(`fetch error: ${err}`);
+    }
+  }, []);
 
   return (
     <div className="App">
@@ -49,16 +59,19 @@ function SearchResults() {
           </div>
         </form>
         <h2>Race Results</h2>
-        <ul>
-          {context.races.map((_, index) => {
-            const link = "/view/" + index.toString();
-            return (
-              <Link to={link}>
-                <li>{context.races[index].name}</li>
-              </Link>
-            );
-          })}
-        </ul>
+        {races.length === 0 && <p>There are no races recorded!</p>}
+        {races.length > 0 && (
+          <ul>
+            {races.map((_, index) => {
+              const link = "/view/" + index.toString();
+              return (
+                <li>
+                  <Link to={link}>{races[index].name}</Link>
+                </li>
+              );
+            })}
+          </ul>
+        )}
       </main>
     </div>
   );
