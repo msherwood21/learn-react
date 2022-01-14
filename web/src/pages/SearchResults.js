@@ -33,15 +33,19 @@ function SearchResults() {
     }
   };
 
-  useEffect(async () => {
-    try {
-      const response = await fetch("http://localhost:3001/races");
-      const json = await response.json();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:3001/races");
+        const json = await response.json();
 
-      setRaces(json);
-    } catch (err) {
-      console.log(`fetch error: ${err}`);
-    }
+        setRaces(json);
+      } catch (err) {
+        console.log(`fetch error: ${err}`);
+      }
+    };
+
+    fetchData();
   }, []);
 
   return (

@@ -50,7 +50,9 @@ function verifyPrivate({ testId, testDescription, httpMethod, path, expectedResp
         if (value === expectedResponse) {
           console.log(`PASSED ${testDescription}`);
         } else {
-          console.error(`FAILED ${testDescription} (${expectedResponse} / ${value})`);
+          console.error(`FAILED ${testDescription}`);
+          console.error(`\tEXPECTED: (${expectedResponse})`);
+          console.error(`\tRECEIVED: (${value})`);
         }
 
         testEvent.emit("event", testId);
