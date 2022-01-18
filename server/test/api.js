@@ -105,13 +105,18 @@ function verifyGet({ testId, testDescription, path, expectedResponse }) {
         value += chunk;
       });
 
+      //- TEST AGAINST RETURN HEADER FOR SUCCESS
+      //  - Success: 200
+      //  - Does Not Exist: 404
+      //- NOTE: To determine POST responses check here:
+      //    https://www.rfc-editor.org/rfc/rfc7231#page-4
       response.on("end", () => {
-        if (value === expectedResponse) {
+        if (response.statusCode === 200 && value === expectedResponse) {
           logger(`PASSED ${testDescription}`);
         } else {
           console.error(`FAILED ${testDescription}`);
           console.error(`\tEXPECTED: (${expectedResponse})`);
-          console.error(`\tRECEIVED: (${value})`);
+          console.error(`\tRECEIVED: (${response.statusCode}) (${value})`);
         }
 
         testData.testEvent.emit("event", testId);

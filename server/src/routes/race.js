@@ -10,7 +10,7 @@ router.get("/:raceId", (req, res) => {
   if (data.isValidId(req.params.raceId)) {
     res.send(JSON.stringify(data.getData(req.params.raceId)));
   } else {
-    res.send(`Error! ID (${req.params.raceId}) is invalid.`);
+    res.sendStatus(404);
   }
 });
 

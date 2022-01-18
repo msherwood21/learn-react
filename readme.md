@@ -18,6 +18,7 @@ not to be undertaken.
 - Node
 - Express
 - React
+  - Context, state and effects with functional components and class components
 - React Router
 - Postgres
 - Cross Origin Resource Sharing (CORS)
