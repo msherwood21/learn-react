@@ -2,7 +2,6 @@ import "../App.css";
 import createResultsStyle from "./CreateResults.module.css";
 import propTypes from "prop-types";
 import React from "react";
-import { RaceResultsContext } from "../store/RaceResultsContext";
 import ResultsTable from "../components/results/ResultsTable";
 
 class CreateResults extends React.Component {
@@ -18,11 +17,19 @@ class CreateResults extends React.Component {
   }
 
   submitHandler = () => {
-    this.context.addRace([{ name: this.state.name, drivers: this.state.drivers }]);
-    this.setState({ name: "", driverCount: 0, drivers: [], committed: true });
-    setTimeout(() => {
-      this.setState({ committed: false });
-    }, 5000);
+    try {
+      const header = new Headers({ "Content-Type": "application/json" });
+      const json = JSON.stringify({ name: this.state.name, drivers: this.state.drivers });
+
+      fetch("http://localhost:3001/race", { method: "POST", headers: header, body: json });
+
+      this.setState({ name: "", driverCount: 0, drivers: [], committed: true });
+      setTimeout(() => {
+        this.setState({ committed: false });
+      }, 5000);
+    } catch (err) {
+      console.log(`fetch error: ${err}`);
+    }
   };
 
   resultHandler = (index, key, event) => {
@@ -108,7 +115,5 @@ CreateResults.defaultProps = {
   driverCount: 0,
   committed: false,
 };
-
-CreateResults.contextType = RaceResultsContext;
 
 export default CreateResults;

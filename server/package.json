@@ -2,8 +2,8 @@
   "name": "race-server",
   "version": "0.0.1",
   "scripts": {
-    "start": "node src/index.js",
-    "test": "DEBUG=express:* node test/index.js"
+    "start": "TEST=1 node src/index.js",
+    "test": "DEBUG=express:*,test:* TEST=1 node test/index.js"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",

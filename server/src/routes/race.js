@@ -1,64 +1,36 @@
-const express = require("express");
+const data = require("../data/races");
 const debug = require("debug")("express:app");
+const express = require("express");
 const router = express.Router();
 
-const jsonResponse = [
-  {
-    name: "Formula 1 Gulf Air Bahrain Grand Prix",
-    drivers: [
-      {
-        driver: "Lewis Hamilton",
-        car: "Mercedes",
-        time: "1:32:03.897",
-      },
-      {
-        driver: "Max Verstappen",
-        car: "Red Bull Racing Honda",
-        time: "+0.745s",
-      },
-      {
-        driver: "Valtteri Bottas",
-        car: "Mercedes",
-        time: "+37.383s",
-      },
-    ],
-  },
-  {
-    name: "Formula 1 Pirelli Gran Premio Del Made In Italy E Dell'Emilia Romagna",
-    drivers: [
-      {
-        driver: "Max Verstappen",
-        car: "Red Bull Racing Honda",
-        time: "2:02:34.598",
-      },
-      {
-        driver: "Lewis Hamilton",
-        car: "Mercedes",
-        time: "+22.000s",
-      },
-      {
-        driver: "Lando Norris",
-        car: "McLaren Mercedes",
-        time: "+23.702s",
-      },
-    ],
-  },
-];
+router.get("/:raceId", (req, res) => {
+  debug(`Received GET /race/${req.params.raceId}`);
 
-router.get("/:raceId", (req, res, next) => {
-  const id = parseInt(req.params.raceId, 10);
-  debug("Received GET /race/" + req.params.raceId);
-
-  if (id === 0 || id === 1) {
-    res.send(JSON.stringify(jsonResponse[id]));
+  //- NOTE: Refactor this to use error codes instead of returning body text.
+  if (data.isValidId(req.params.raceId)) {
+    res.send(JSON.stringify(data.getData(req.params.raceId)));
   } else {
     res.send(`Error! ID (${req.params.raceId}) is invalid.`);
   }
 });
 
-router.post("/", (req, res, next) => {
-  debug("Received POST /race");
-  res.send("Received POST /race");
+router.post("/", (req, res) => {
+  debug(`Received POST /race`);
+
+  if (!data.isValidData(req.body)) {
+    res.sendStatus(415);
+  } else if (!data.isValidName(req.body.name)) {
+    res.sendStatus(409);
+  }
+  //- Verify race was added successfully -> 500
+  //  NOTE: This can't be tested unless the DB interface is mocked
+  else {
+    const id = data.commitData(req.body);
+
+    res.status(201);
+    res.set("Referer", `/race/${id}`);
+    res.send();
+  }
 });
 
 module.exports = router;

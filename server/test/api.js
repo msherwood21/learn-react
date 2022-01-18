@@ -1,43 +1,102 @@
 const http = require("http");
 const EventEmitter = require("events");
+const logger = require("debug")("test:api");
 
-let userEvent = undefined;
-let testStatus = [];
-const testEvent = new EventEmitter();
+const testData = {
+  testStatus: [],
+  testEvent: new EventEmitter(),
+  host: "localhost",
+  port: 3000,
+};
 
 function init(doneEvent) {
-  userEvent = doneEvent;
-
-  testEvent.on("event", (index) => {
-    testStatus[index] = true;
+  testData.testEvent.on("event", (index) => {
+    testData.testStatus[index] = true;
 
     let allDone = true;
-    for (test in testStatus) {
-      if (testStatus[test] === false) {
+    for (test in testData.testStatus) {
+      if (testData.testStatus[test] === false) {
         allDone = false;
         break;
       }
     }
 
     if (allDone) {
-      console.log("All tests complete!");
-      userEvent.obj.emit(userEvent.name);
+      logger("All tests complete!");
+      doneEvent.obj.emit(doneEvent.name);
     }
   });
 }
 
-function verify(testProperties) {
-  verifyPrivate({
-    testId: testStatus.push(false) - 1,
-    ...testProperties,
-  });
+function verify(httpMethod, testProperties) {
+  if (httpMethod === null || httpMethod === undefined) {
+    console.error(`ERROR: Bad method (${httpMethod}) passed to verify.`);
+  } else {
+    switch (httpMethod) {
+      case "GET": {
+        verifyGet({
+          testId: testData.testStatus.push(false) - 1,
+          ...testProperties,
+        });
+        break;
+      }
+      case "POST": {
+        verifyPost({
+          testId: testData.testStatus.push(false) - 1,
+          ...testProperties,
+        });
+        break;
+      }
+      default: {
+        console.error(`ERROR: Unknown method (${httpMethod}) passed to verify.`);
+      }
+    }
+  }
 }
 
-function verifyPrivate({ testId, testDescription, httpMethod, path, expectedResponse }) {
-  console.log("Testing " + testDescription);
+function verifyPost({ testId, testDescription, path, data }) {
+  logger("Post test: " + testDescription);
+
+  const options = {
+    hostname: testData.host,
+    path: path,
+    port: testData.port,
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+  };
+  const request = http.request(options, (response) => {
+    response.on("data", (chunk) => {
+      process.stdout.write(`RESPONSE: ${chunk}`);
+    });
+
+    //- TEST AGAINST RETURN HEADER FOR SUCCESS
+    //  - Success: 201 (resource is at refered URL so no return info)
+    //  - Bad body: 415
+    //  - Already exists: 409
+    //  - Server logic error: 500
+    //- NOTE: To determine POST responses check here:
+    //    https://www.rfc-editor.org/rfc/rfc7231#page-4
+    response.on("end", () => {
+      if (response.statusCode === 201) {
+        logger(`PASSED ${testDescription}`);
+      } else {
+        console.error(`FAILED ${testDescription}`);
+        console.error(`\tRECEIVED: (${response.statusCode})`);
+      }
+
+      testData.testEvent.emit("event", testId);
+    });
+  });
+
+  request.write(JSON.stringify(data));
+  request.end();
+}
+
+function verifyGet({ testId, testDescription, path, expectedResponse }) {
+  logger("Get test: " + testDescription);
 
   const request = http.request(
-    { hostname: "localhost", path: path, port: 3000, method: httpMethod },
+    { hostname: testData.host, path: path, port: testData.port, method: "GET" },
     (response) => {
       let value = "";
 
@@ -48,14 +107,14 @@ function verifyPrivate({ testId, testDescription, httpMethod, path, expectedResp
 
       response.on("end", () => {
         if (value === expectedResponse) {
-          console.log(`PASSED ${testDescription}`);
+          logger(`PASSED ${testDescription}`);
         } else {
           console.error(`FAILED ${testDescription}`);
           console.error(`\tEXPECTED: (${expectedResponse})`);
           console.error(`\tRECEIVED: (${value})`);
         }
 
-        testEvent.emit("event", testId);
+        testData.testEvent.emit("event", testId);
       });
     }
   );
