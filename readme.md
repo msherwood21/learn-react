@@ -2,16 +2,28 @@
 
 ## Goal
 
-This project aims to teach me React and ES6 level Javascript. It will use Docker
-and docker compose to cement that knowledge. This project will not use
-Typescript, a SQL database, or any other sort of outside component. Community
-React libraries are allowed.
+This project aims to teach me Docker, Kubernetes, React, ES6 level Javascript
+and common web practices. It will use Docker and docker compose to cement that
+knowledge. This project will not use Typescript.
 
 ### Vision
 
 A website to create and list the results of a race. There should be a home page,
 (at least) a page for results and a page to create / update results. Deletion is
 not to be undertaken.
+
+### Technologies Used or Learned
+- Docker
+- Docker Compose
+- Node
+- Express
+- React
+- React Router
+- Postgres
+- Cross Origin Resource Sharing (CORS)
+- CommonJS / ES Modules
+- ES Lint
+- Node Package Manager
 
 ## Usage
 
@@ -24,7 +36,7 @@ not to be undertaken.
 
 Open a terminal in this directory. Once here, type `docker-compose up --build`.
 This should build a Docker image if it doesn't exist, setup the network for the
-container and start serving the page on `http://localhost:3001`. You can stop
+container and start serving the page on `http://localhost:3000`. You can stop
 the container as you would any other process, but make sure to run
 `docker-compose down` to cleanup any resources as well.
 
