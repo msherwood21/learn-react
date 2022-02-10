@@ -30,6 +30,6 @@ services:
     environment:
       - POSTGRES_PASSWORD=test
     volumes:
-      - type: bind
-        source: ./db-files
-        target: /var/lib/postgresql/data
+      - "learn-react-db:/var/lib/postgresql/data"
+volumes:
+  learn-react-db:
